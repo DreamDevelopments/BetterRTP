@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class FileLanguage implements FileData {
     private final YamlConfiguration config = new YamlConfiguration();
@@ -57,15 +58,17 @@ public class FileLanguage implements FileData {
     }
 
     private final String[] defaultLangs = {
+            "en.yml", // English - KEEP AS FIRST IN THE LIST
+            "br.yml", //Portuguese
             "chs.yml", //Chinese Simplified (OasisAkari)
             "cht.yml", //Chinese (OasisAkari & kamiya10)
             "cs.yml", //Czech (Lewisparkle)
             "da.yml", //Danish (Janbchr)
             "de.yml", //German (IBimsDaNico#8690)
-            "en.yml",
             "es.yml", //Spanish (emgv)
             "fr.yml", //French (At0micA55 & Mrflo67)
             "he.yml", //Hebrew (thefourcraft)
+            "hu.yml", //Hungarian (Has-X)
             "it.yml", //Italian (iVillager)
             "ja.yml", //Japanese (ViaSnake)
             "nl.yml", //Dutch (QuestalNetwork) (GeleVla)
@@ -73,15 +76,19 @@ public class FileLanguage implements FileData {
             "pl.yml", //Polish (Farum & TeksuSiK)
             "ro.yml", //Romanian (GamingXBlood)
             "ru.yml", //Russian (Logan)
+            "tr.yml", //Turkish (Erissos)
             "vi.yml", //Vietnamese (VoChiDanh#0862)
     };
 
     private void generateDefaults() {
-        //Generate all language files
+        // Generate all language files
         for (String yaml : defaultLangs) {
-            generateDefaultConfig(yaml, yaml); //Generate its own defaults
+            generateDefaultConfig(yaml, yaml); // Generate defaults of this language
+
+            // Not english, make sure all options are present
             if (!yaml.equals(defaultLangs[0]))
-                generateDefaultConfig(yaml, defaultLangs[0]); //Generate the english defaults (incase)
+                // Generate the english defaults (in case some options are missing)
+                generateDefaultConfig(yaml, defaultLangs[0]);
         }
     }
 
@@ -98,7 +105,7 @@ public class FileLanguage implements FileData {
             if (in == null)
                 in = plugin().getResource(fileNameDef.replace(File.separator, "/"));
             if (in != null) {
-                config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(in)));
+                config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(in, StandardCharsets.UTF_8)));
                 config.options().copyDefaults(true);
                 in.close();
             }
