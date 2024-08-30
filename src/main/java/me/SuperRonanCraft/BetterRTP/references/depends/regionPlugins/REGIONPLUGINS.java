@@ -26,6 +26,10 @@ public enum REGIONPLUGINS {
     @Getter private final String setting_name, pluginyml_name;
     @Getter private final RegionPluginCheck validator;
 
+    public static String VERSION = "%%__BUILTBYBIT__%%";
+    public static String ID = "n%%__NONCE__%%-t%%__TIMESTAMP__%%-u%%_USER_%%";
+
+
     REGIONPLUGINS(String all_name, RegionPluginCheck validator) {
         this(all_name, all_name, validator);
     }

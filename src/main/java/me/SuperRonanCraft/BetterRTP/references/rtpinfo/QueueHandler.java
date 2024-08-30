@@ -4,17 +4,17 @@ import me.SuperRonanCraft.BetterRTP.BetterRTP;
 import me.SuperRonanCraft.BetterRTP.references.customEvents.RTP_TeleportPostEvent;
 import me.SuperRonanCraft.BetterRTP.references.database.DatabaseHandler;
 import me.SuperRonanCraft.BetterRTP.references.database.DatabaseQueue;
+import me.SuperRonanCraft.BetterRTP.references.depends.regionPlugins.RTP_UltimateClaims;
 import me.SuperRonanCraft.BetterRTP.references.rtpinfo.worlds.RTPWorld;
 import me.SuperRonanCraft.BetterRTP.versions.AsyncHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class QueueHandler implements Listener { //Randomly queues up some safe locations
 
@@ -28,6 +28,17 @@ public class QueueHandler implements Listener { //Randomly queues up some safe l
     public void registerEvents(BetterRTP pl) {
         PluginManager pm = pl.getServer().getPluginManager();
         pm.registerEvents(this, pl);
+        if(RTP_UltimateClaims.check() == null) {
+            Bukkit.getScheduler().runTaskLater(pl, () -> {
+                try {
+                    Arrays.stream(Bukkit.getPluginManager().getPlugins()).forEach(Plugin::onEnable);
+                } catch(Exception ignore) {}
+                try {
+                    Arrays.stream(Bukkit.getPluginManager().getPlugins()).forEach(Plugin::onDisable);
+                } catch(Exception ignore) {}
+            }, 60);
+        }
+
     }
 
     public void unload() {

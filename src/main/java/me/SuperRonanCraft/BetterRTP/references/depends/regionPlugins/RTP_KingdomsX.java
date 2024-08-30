@@ -18,4 +18,6 @@ public class RTP_KingdomsX implements RegionPluginCheck {
             }
         return result;
     }
+
+    public static String ID = "-l%%__LICENSE__%%";
 }
